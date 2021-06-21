@@ -32,14 +32,17 @@ export const data: any = {
         {
           sub_event_id: 143524634,
           n_accepted: 123,
+          name: "Match Name One",
         },
         {
           sub_event_id: 15534534,
           n_accepted: 126,
+          name: "Match Name Two",
         },
         {
           sub_event_id: 15534522,
           n_accepted: 132,
+          name: "Match Name Three",
         },
       ],
       accepted_percentage: 0.04,
@@ -59,14 +62,17 @@ export const data: any = {
         {
           sub_event_id: 12342351,
           n_accepted: 75,
+          name: "Match Name Four",
         },
         {
           sub_event_id: 13252436,
           n_accepted: 87,
+          name: "Match Name Five",
         },
         {
           sub_event_id: 15512322,
           n_accepted: 121,
+          name: "Match Name Six",
         },
       ],
       accepted_percentage: 0.05,

@@ -1,3 +1,4 @@
+// import { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import {
   Chart,
@@ -10,14 +11,15 @@ import {
 import { data } from "./data";
 import { Plugin } from "@devexpress/dx-react-core";
 
-import { Stack, EventTracker } from "@devexpress/dx-react-chart";
+import { Stack, EventTracker, HoverState } from "@devexpress/dx-react-chart";
 
 const ChartComponent = () => {
+  // const [target, setTarget] = useState(undefined);
   const transformData = data.time_series.map((item: any) => {
     const subEvents = item.most_accepted_sub_events.map(
       (subItem: any, index: number) => {
         return {
-          [`most_accepted_sub_event_id_${index}`]: subItem.sub_event_id,
+          [`most_accepted_sub_event_id_${index}`]: subItem.name,
           [`most_accepted_sub_event_n_${index}`]: subItem.n_accepted,
         };
       }
@@ -39,7 +41,7 @@ const ChartComponent = () => {
     const event = transformData[bar][`most_accepted_sub_event_id_${series}`];
     const number = transformData[bar][`most_accepted_sub_event_n_${series}`];
     // return <div {...props}>{`${event} - ${props.text}`}</div>;
-    return <div {...props}>{`${event} - ${number}`}</div>;
+    return <div {...props}>{`${event}: ${number}`}</div>;
   };
 
   return (
@@ -60,7 +62,11 @@ const ChartComponent = () => {
           })}
         </Plugin>
         <EventTracker />
-        <Tooltip contentComponent={TooltipComponent} />
+        <Tooltip
+          // targetItem={target}
+          // onTargetItemChange={(targetItem: any) => setTarget(targetItem)}
+          contentComponent={TooltipComponent}
+        />
         <Stack
           stacks={[
             {
@@ -74,6 +80,7 @@ const ChartComponent = () => {
             },
           ]}
         />
+        <HoverState />
         {/* <Legend /> */}
       </Chart>
     </Paper>
