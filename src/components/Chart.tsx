@@ -38,14 +38,14 @@ const ChartComponent = () => {
     };
   });
 
-  const TooltipComponent = (props: any) => {
-    const series = props.targetItem.series.split(" ")[2];
-    const bar = props.targetItem.point;
-    const event = transformData[bar][`most_accepted_sub_event_id_${series}`];
-    const number = transformData[bar][`most_accepted_sub_event_n_${series}`];
-    // return <div {...props}>{`${event} - ${props.text}`}</div>;
-    return <div {...props}>{`${event}: ${number}`}</div>;
-  };
+  // const TooltipComponent = (props: any) => {
+  //   const series = props.targetItem.series.split(" ")[2];
+  //   const bar = props.targetItem.point;
+  //   const event = transformData[bar][`most_accepted_sub_event_id_${series}`];
+  //   const number = transformData[bar][`most_accepted_sub_event_n_${series}`];
+  //   // return <div {...props}>{`${event} - ${props.text}`}</div>;
+  //   return <div {...props}>{`${event}: ${number}`}</div>;
+  // };
 
   const TooltipComponentV2 = (props: any) => {
     const bar = props.targetItem?.point;
@@ -53,13 +53,67 @@ const ChartComponent = () => {
     return (
       <Grid {...props}>
         <Grid container>
-          {events?.map((event: any) => {
+          {events?.map((event: any, index: number) => {
             return (
               <>
-                <Grid item lg={2} md={2} sm={2} xs={2}>
-                  color
+                <Grid item lg={1} md={1} sm={1} xs={1}>
+                  {index === 0 && (
+                    <div
+                      style={{
+                        height: "15px",
+                        width: "15px",
+                        border: "1px solid transparent",
+                        borderRadius: "50%",
+                        backgroundColor: "#42A5F5",
+                      }}
+                    />
+                  )}
+                  {index === 1 && (
+                    <div
+                      style={{
+                        height: "15px",
+                        width: "15px",
+                        border: "1px solid transparent",
+                        borderRadius: "50%",
+                        backgroundColor: "#FF7043",
+                      }}
+                    />
+                  )}
+                  {index === 2 && (
+                    <div
+                      style={{
+                        height: "15px",
+                        width: "15px",
+                        border: "1px solid transparent",
+                        borderRadius: "50%",
+                        backgroundColor: "#9CCC65",
+                      }}
+                    />
+                  )}
+                  {index === 3 && (
+                    <div
+                      style={{
+                        height: "15px",
+                        width: "15px",
+                        border: "1px solid transparent",
+                        borderRadius: "50%",
+                        backgroundColor: "#FFCA28",
+                      }}
+                    />
+                  )}
+                  {index === 4 && (
+                    <div
+                      style={{
+                        height: "15px",
+                        width: "15px",
+                        border: "1px solid transparent",
+                        borderRadius: "50%",
+                        backgroundColor: "#26A69A",
+                      }}
+                    />
+                  )}
                 </Grid>
-                <Grid item lg={8} md={8} sm={8} xs={8}>
+                <Grid item lg={9} md={9} sm={9} xs={9}>
                   {event.name}
                 </Grid>
                 <Grid
