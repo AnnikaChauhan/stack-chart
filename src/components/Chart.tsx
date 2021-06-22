@@ -47,6 +47,13 @@ const ChartComponent = () => {
   //   return <div {...props}>{`${event}: ${number}`}</div>;
   // };
 
+  const handleChangeTargetItem = (target: any) => {
+    if (target) {
+      return setTargetItem({ ...target, series: "Sub Event 4" });
+    }
+    return setTargetItem(undefined);
+  };
+
   const TooltipComponentV2 = (props: any) => {
     const bar = props.targetItem?.point;
     const events = transformData[bar]?.most_accepted_sub_events;
@@ -142,11 +149,23 @@ const ChartComponent = () => {
     );
   };
 
-  const handleChangeTargetItem = (target: any) => {
-    if (target) {
-      return setTargetItem({ ...target, series: "Sub Event 4" });
-    }
-    return setTargetItem(undefined);
+  const TooltipSheet = (props: any) => {
+    return (
+      <Tooltip.Sheet
+        {...props}
+        // style={{ background: "grey" }}
+      >
+        {props.children}
+      </Tooltip.Sheet>
+    );
+  };
+
+  const TooltipArrow = (props: any) => {
+    return (
+      <Tooltip.Arrow {...props} placement="none">
+        {props.children}
+      </Tooltip.Arrow>
+    );
   };
 
   return (
@@ -172,6 +191,8 @@ const ChartComponent = () => {
           onTargetItemChange={handleChangeTargetItem}
           contentComponent={TooltipComponentV2}
           overlayComponent={TooltipOverlay}
+          sheetComponent={TooltipSheet}
+          arrowComponent={TooltipArrow}
         />
         <Stack
           stacks={[
