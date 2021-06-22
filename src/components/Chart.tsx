@@ -1,20 +1,23 @@
-// import { useState } from "react";
-import Paper from "@material-ui/core/Paper";
+import { Paper, Grid } from "@material-ui/core";
 import {
   Chart,
   BarSeries,
   ArgumentAxis,
   ValueAxis,
-  // Legend,
   Tooltip,
 } from "@devexpress/dx-react-chart-material-ui";
 import { data } from "./data";
 import { Plugin } from "@devexpress/dx-react-core";
 
-import { Stack, EventTracker, HoverState } from "@devexpress/dx-react-chart";
+import {
+  Stack,
+  EventTracker,
+  // HoverState
+} from "@devexpress/dx-react-chart";
+import { useState } from "react";
 
 const ChartComponent = () => {
-  // const [target, setTarget] = useState(undefined);
+  const [targetItem, setTargetItem] = useState(undefined);
   const transformData = data.time_series.map((item: any) => {
     const subEvents = item.most_accepted_sub_events.map(
       (subItem: any, index: number) => {
@@ -44,6 +47,54 @@ const ChartComponent = () => {
     return <div {...props}>{`${event}: ${number}`}</div>;
   };
 
+  const TooltipComponentV2 = (props: any) => {
+    const bar = props.targetItem?.point;
+    const events = transformData[bar]?.most_accepted_sub_events;
+    return (
+      <Grid {...props}>
+        <Grid container>
+          {events?.map((event: any) => {
+            return (
+              <>
+                <Grid item lg={2} md={2} sm={2} xs={2}>
+                  color
+                </Grid>
+                <Grid item lg={8} md={8} sm={8} xs={8}>
+                  {event.name}
+                </Grid>
+                <Grid
+                  item
+                  lg={2}
+                  md={2}
+                  sm={2}
+                  xs={2}
+                  style={{ textAlign: "right" }}
+                >
+                  {event.n_accepted}
+                </Grid>
+              </>
+            );
+          })}
+        </Grid>
+      </Grid>
+    );
+  };
+
+  const TooltipOverlay = (props: any) => {
+    return (
+      <Tooltip.Overlay {...props} style={{ width: "300px" }}>
+        {props.children}
+      </Tooltip.Overlay>
+    );
+  };
+
+  const handleChangeTargetItem = (target: any) => {
+    if (target) {
+      return setTargetItem({ ...target, series: "Sub Event 4" });
+    }
+    return setTargetItem(undefined);
+  };
+
   return (
     <Paper elevation={0}>
       <Chart data={transformData}>
@@ -63,9 +114,10 @@ const ChartComponent = () => {
         </Plugin>
         <EventTracker />
         <Tooltip
-          // targetItem={target}
-          // onTargetItemChange={(targetItem: any) => setTarget(targetItem)}
-          contentComponent={TooltipComponent}
+          targetItem={targetItem}
+          onTargetItemChange={handleChangeTargetItem}
+          contentComponent={TooltipComponentV2}
+          overlayComponent={TooltipOverlay}
         />
         <Stack
           stacks={[
@@ -80,8 +132,7 @@ const ChartComponent = () => {
             },
           ]}
         />
-        <HoverState />
-        {/* <Legend /> */}
+        {/* <HoverState /> */}
       </Chart>
     </Paper>
   );
