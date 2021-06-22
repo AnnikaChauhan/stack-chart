@@ -13,10 +13,12 @@ import {
   Stack,
   EventTracker,
   // HoverState
+  SelectionState,
 } from "@devexpress/dx-react-chart";
 import { useState } from "react";
 
 const ChartComponent = () => {
+  const [selection, setSelection] = useState<any>([]);
   const [targetItem, setTargetItem] = useState(undefined);
   const transformData = data.time_series.map((item: any) => {
     const subEvents = item.most_accepted_sub_events.map(
@@ -143,7 +145,13 @@ const ChartComponent = () => {
 
   const TooltipOverlay = (props: any) => {
     return (
-      <Tooltip.Overlay {...props} style={{ width: "300px" }}>
+      <Tooltip.Overlay
+        {...props}
+        style={{
+          width: "300px",
+          // marginTop: "20px"
+        }}
+      >
         {props.children}
       </Tooltip.Overlay>
     );
@@ -168,6 +176,27 @@ const ChartComponent = () => {
     );
   };
 
+  const compare = (
+    { series, point }: any,
+    { series: targetSeries, point: targetPoint }: any
+  ) => series === targetSeries && point === targetPoint;
+
+  const handleClick = ({ targets }: any) => {
+    const target = targets[0];
+    if (target) {
+      const targetArray = [
+        { ...target, series: "Sub Event 0" },
+        { ...target, series: "Sub Event 1" },
+        { ...target, series: "Sub Event 2" },
+        { ...target, series: "Sub Event 3" },
+        { ...target, series: "Sub Event 4" },
+      ];
+      setSelection(
+        selection[0] && compare(selection[0], target) ? [] : [...targetArray]
+      );
+    }
+  };
+
   return (
     <Paper elevation={0}>
       <Chart data={transformData}>
@@ -185,7 +214,7 @@ const ChartComponent = () => {
             );
           })}
         </Plugin>
-        <EventTracker />
+        <EventTracker onClick={handleClick} />
         <Tooltip
           targetItem={targetItem}
           onTargetItemChange={handleChangeTargetItem}
@@ -207,8 +236,12 @@ const ChartComponent = () => {
             },
           ]}
         />
+        <SelectionState selection={selection} />
         {/* <HoverState /> */}
       </Chart>
+      {selection.length > 0 && (
+        <div>Selection Details Table for Column {selection[0].point}</div>
+      )}
     </Paper>
   );
 };
